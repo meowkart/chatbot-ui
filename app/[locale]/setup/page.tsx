@@ -142,7 +142,7 @@ export default function SetupPage() {
       )
     )
 
-    router.push("/chat")
+    router.refresh()
   }
 
   const renderStep = (stepNum: number) => {
