@@ -76,7 +76,14 @@ export default function SetupPage() {
   }
 
   const handleSaveSetupSetting = async () => {
-    if (!profile) return
+    const session = (await supabase.auth.getSession()).data.session
+    if (!session) {
+      router.push("/login")
+      return
+    }
+
+    const user = session.user
+    const profile = await getProfileByUserId(user.id)
 
     let profileImageUrl = ""
     let profileImagePath = ""
@@ -155,7 +162,7 @@ export default function SetupPage() {
             stepNum={currentStep}
             stepTitle="Welcome to Chatbot UI"
             onShouldProceed={handleShouldProceed}
-            showNextButton={!!(displayName && username && usernameAvailable)}
+            showNextButton={!!(username && usernameAvailable)}
             showBackButton={false}
           >
             <ProfileStep
